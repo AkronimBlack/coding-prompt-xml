@@ -2,10 +2,9 @@
 
 namespace src;
 
-/**
- * Class Bootstrap
- * @package src
- */
+use src\sys\Router;
+use src\sys\Routing\InputHandler;
+
 class Bootstrap
 {
     /**
@@ -13,7 +12,8 @@ class Bootstrap
      */
     public function __construct()
     {
-        echo 'test';
+        $router = new Router(new InputHandler());
+        $router->route();
     }
 
 }
