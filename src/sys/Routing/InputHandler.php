@@ -2,10 +2,12 @@
 
 namespace src\sys\Routing;
 
+use src\sys\Entity\Request;
+
 class InputHandler
 {
     public function constructRequestFromGlobals()
     {
-        echo 'test';
+        return new Request();
     }
 }
