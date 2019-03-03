@@ -21,6 +21,10 @@ class Router
      * @var Renderer
      */
     private $renderer;
+    /**
+     * @var array
+     */
+    private $routs;
 
     /**
      * Router constructor.
@@ -28,15 +32,18 @@ class Router
      * @param InputHandler $inputHandler
      * @param RoutingHandler $routingHandler
      * @param Renderer $renderer
+     * @param array $routs
      */
     public function __construct(
         InputHandler $inputHandler,
         RoutingHandler $routingHandler,
-        Renderer $renderer
+        Renderer $renderer,
+        array $routs
     ) {
         $this->inputHandler   = $inputHandler;
         $this->routingHandler = $routingHandler;
         $this->renderer       = $renderer;
+        $this->routs = $routs;
     }
 
     public function route(): void
@@ -44,7 +51,7 @@ class Router
         $request  = $this->inputHandler->constructRequestFromGlobals();
         $response = $this->routingHandler->execute(
             $request,
-            Routes::getRouts()
+            $this->routs
         );
         $this->renderer->execute($response);
     }

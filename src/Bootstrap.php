@@ -2,6 +2,7 @@
 
 namespace src;
 
+use config\Routes;
 use src\sys\Renderer\Renderer;
 use src\sys\Router;
 use src\sys\Routing\InputHandler;
@@ -17,7 +18,8 @@ class Bootstrap
         $router = new Router(
             new InputHandler(),
             new RoutingHandler(),
-            new Renderer()
+            new Renderer(),
+            Routes::getRouts()
         );
         $router->route();
     }
