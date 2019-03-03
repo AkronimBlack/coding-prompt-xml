@@ -10,6 +10,7 @@ class Request
     private $url;
     private $query;
     private $method;
+    private $queryArray;
 
     public function __construct(
         $uri,
@@ -20,6 +21,8 @@ class Request
         $this->url = $this->constructUrl($uri);
         $this->query  = urldecode($query);
         $this->method = $method;
+
+        $this->resolveQuery();
     }
 
     /**
@@ -67,6 +70,32 @@ class Request
     public function getUrl()
     {
         return $this->url;
+    }
+
+    private function resolveQuery(): void
+    {
+        if($this->getQuery()){
+            $query         = array();
+            $explodedQuery = explode('&', $this->getQuery());
+            foreach ($explodedQuery as $queryValue) {
+                list($key, $value) = explode('=', $queryValue);
+                $query[$key] = $value;
+            }
+            $this->queryArray = $query;
+        }
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return string|null
+     */
+    public function findInQuery(string $key): ?string
+    {
+        if (array_key_exists($key , $this->queryArray)){
+            return $this->queryArray[$key];
+        }
+        return null;
     }
 
 }
