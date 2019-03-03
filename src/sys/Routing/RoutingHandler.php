@@ -10,10 +10,12 @@ class RoutingHandler
     /**
      * @param Request $request
      * @param array $routs
+     *
      */
     public function execute(Request $request, array $routs)
     {
-        var_dump($this->resolveRoute($request, $routs));
+        $callable = $this->resolveRoute($request, $routs);
+        $this->callControllerAndMethod($callable['controller'] , $callable['method'] , $request);
     }
 
     /**
@@ -39,5 +41,35 @@ class RoutingHandler
             'controller' => 'IndexController',
             'method' => 'index'
         );
+    }
+
+    /**
+     * @param string $controller
+     * @param string $method
+     * @param Request $request
+     */
+    private function callControllerAndMethod(string $controller, string $method, Request $request)
+    {
+
+        $class = 'src\\Infrastructure\\Controllers\\http\\' . $controller;
+        if(!class_exists($class)){
+            echo 'Failed calling controller or method';
+            die();
+        }
+
+        try {
+            $classDetails = new \ReflectionMethod($class, $method);
+        } catch (\ReflectionException $e) {
+            var_dump($e);
+        }
+        $params = $classDetails->getParameters();
+        foreach ($params as $param)
+        {
+            if($param->getType() == 'src\sys\Entity\Request')
+            {
+                return call_user_func_array(array($class, $method), array($request));
+            }
+        }
+        call_user_func(array($class, $method));
     }
 }
