@@ -29,7 +29,7 @@ class RoutingHandler
     {
         foreach ($routes as $route => $call)
         {
-            if($request->getUri() === $route)
+            if($request->getUrl() === $route)
             {
                 list($controller , $method) = explode('/', $call);
                 return array(

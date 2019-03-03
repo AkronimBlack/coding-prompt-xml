@@ -7,6 +7,7 @@ class Request
 {
 
     private $uri;
+    private $url;
     private $query;
     private $method;
 
@@ -16,6 +17,7 @@ class Request
         $query
     ) {
         $this->uri    = $uri;
+        $this->url = $this->constructUrl($uri);
         $this->query  = urldecode($query);
         $this->method = $method;
     }
@@ -44,5 +46,27 @@ class Request
         return $this->method;
     }
 
+    /**
+     * @param $uri
+     *
+     * @return mixed
+     */
+    private function constructUrl($uri)
+    {
+        if (strpos($uri, '?')){
+            list($url, $query) = explode('?', $uri);
+        }else{
+            $url = $uri;
+        }
+        return $url;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
 
 }
