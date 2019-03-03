@@ -6,7 +6,7 @@ use src\sys\Entity\Request;
 
 class InputHandler
 {
-    public function constructRequestFromGlobals()
+    public function constructRequestFromGlobals(): Request
     {
         return new Request(
             $_SERVER['REQUEST_URI'],

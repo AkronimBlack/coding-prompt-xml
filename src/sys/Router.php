@@ -3,6 +3,7 @@
 namespace src\sys;
 
 use src\sys\Routing\InputHandler;
+use src\sys\Routing\RoutingHandler;
 
 class Router
 {
@@ -10,13 +11,25 @@ class Router
      * @var InputHandler
      */
     private $inputHandler;
+    /**
+     * @var RoutingHandler
+     */
+    private $routingHandler;
 
-    public function __construct(InputHandler $inputHandler)
+    /**
+     * Router constructor.
+     *
+     * @param InputHandler $inputHandler
+     * @param RoutingHandler $routingHandler
+     */
+    public function __construct(InputHandler $inputHandler, RoutingHandler $routingHandler)
     {
         $this->inputHandler = $inputHandler;
+        $this->routingHandler = $routingHandler;
     }
     public function route()
     {
-        $this->inputHandler->constructRequestFromGlobals();
+        $request = $this->inputHandler->constructRequestFromGlobals();
+        $this->routingHandler->execute($request);
     }
 }
