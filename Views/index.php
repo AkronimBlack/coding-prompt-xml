@@ -1,7 +1,7 @@
 <?php
 if (array_key_exists('Error', $data['response'])) {
     echo $data['response']['Error'];
-}else{
+} else {
     ?>
     <!DOCTYPE html>
     <html>
@@ -48,6 +48,26 @@ if (array_key_exists('Error', $data['response'])) {
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
                         </div>
+                        <table class="table" id="mainTable">
+                            <thead>
+                            <tr>
+                                <th scope="col">Code</th>
+                                <th scope="col">Costumer</th>
+                                <th scope="col">Contact name</th>
+                            </tr>
+                            </thead>
+                            <tbody id="mainData">
+                            </tbody>
+                        </table>
+                        <table class="table" id="productTable">
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Discount Percentage</th>
+                            </tr>
+                            <tbody id="productData">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -56,30 +76,91 @@ if (array_key_exists('Error', $data['response'])) {
     </body>
 
     <script type="text/javascript">
-        $("#uploadForm").on('submit', (function (e) {
-            e.preventDefault();
-            $.ajax({
-                url: 'http://localhost:8000/file/upload',
-                type: "POST",
-                data: new FormData(this),
-                contentType: false,
-                cache: false,
-                processData: false,
-                dataType: 'json',
-                success: function (data) {
-                    debugger;
-                    if (data['success'] === true) {
-                        alert(data['items']);
-                        $("#uploadForm")[0].reset();
+        $(document).ready(function (e) {
+            hideAll();
+            $("#uploadForm").on('submit', (function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: 'http://localhost:8000/file/upload',
+                    type: "POST",
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: function (data) {
+                        debugger;
+                        if (data['success'] === true) {
+                            alert(data['items']);
+                            $("#uploadForm")[0].reset();
+                        }
+                    },
+                    error: function (e) {
+                        alert(e);
                     }
-                },
-                error: function (e) {
-                    alert(e);
-                }
-            });
-        }));
+                });
+            }));
+
+            $("#apiForm").on('submit', (function (e) {
+                e.preventDefault();
+                debugger;
+                reset();
+                let code = $("#productCode").val();
+                $.ajax({
+                    url: 'http://localhost:8000/test',
+                    type: "GET",
+                    data: {
+                        'code': code
+                    },
+                    dataType: 'json',
+                    success: function (data, textStatus, xhr) {
+                        debugger;
+                        html = '';
+                        if (xhr.status === 200) {
+                            html += '<tr><th scope="row">' + data['code'] + '</th><td>' + data['costumer'] + '</td><td>' + data['contact_name'] + '</td></tr>';
+                            console.log(data);
+                            $("#mainData").html(html);
+                            html = '';
+                            $.each(data['products'], function (k, v) {
+                                html += '<tr><th scope="row">' + v['name'] + '</th><td>' + v['price'] + '</td><td>' + v['discount_percentage'] + '</td></tr>';
+                            })
+                            $("#productData").html(html);
+                            showAll();
+                        } else {
+                            reset();
+                            hideAll();
+                            alert(data['error']);
+                        }
+
+                    },
+                    error: function (e) {
+                        debugger;
+                        alert(e);
+                    }
+                });
+            }));
+        });
+
+        function showAll() {
+            $("#productTable").show();
+            $("#mainTable").show();
+            // $("#productData").show();
+            // $("#mainData").show();
+        }
+
+        function hideAll() {
+            $("#productTable").hide();
+            $("#mainTable").hide();
+            // $("#productData").hide();
+            // $("#mainData").hide();
+        }
+
+        function reset() {
+            $("#productData").html('');
+            $("#mainData").html('');
+        }
     </script>
     </html>
-<?php
+    <?php
 }
 ?>

@@ -10,6 +10,7 @@ class Routes
         '/load/database' => 'IndexController/loadDatabase',
         '/login' => 'UserController/login',
         '/file/upload' => 'FileController/upload',
+        '/test' => 'IndexController/test'
     );
 
     /**
