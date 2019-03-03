@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: BlackBit
- * Date: 28-Feb-19
- * Time: 23:01
- */
 
 namespace src\sys\Entity;
 
