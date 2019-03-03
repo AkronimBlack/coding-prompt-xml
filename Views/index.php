@@ -103,43 +103,53 @@ if (array_key_exists('Error', $data['response'])) {
 
             $("#apiForm").on('submit', (function (e) {
                 e.preventDefault();
-                debugger;
                 reset();
                 let code = $("#productCode").val();
                 $.ajax({
-                    url: 'http://localhost:8000/test',
+                    url: 'http://195.191.29.170/api/offer',
                     type: "GET",
                     data: {
                         'code': code
                     },
-                    dataType: 'json',
+                    dataType: 'jsonp',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader ("Authorization", "Basic " + make_base_auth('candidate1', 'iptelJobOffer789!'));
+                    },
                     success: function (data, textStatus, xhr) {
                         debugger;
                         html = '';
                         if (xhr.status === 200) {
+                            debugger;
                             html += '<tr><th scope="row">' + data['code'] + '</th><td>' + data['costumer'] + '</td><td>' + data['contact_name'] + '</td></tr>';
                             console.log(data);
                             $("#mainData").html(html);
                             html = '';
                             $.each(data['products'], function (k, v) {
                                 html += '<tr><th scope="row">' + v['name'] + '</th><td>' + v['price'] + '</td><td>' + v['discount_percentage'] + '</td></tr>';
-                            })
+                            });
                             $("#productData").html(html);
                             showAll();
                         } else {
+                            debugger;
                             reset();
                             hideAll();
                             alert(data['error']);
                         }
 
                     },
-                    error: function (e) {
-                        debugger;
-                        alert(e);
+                    error: function(xhr, status, error) {
+                        console.log(error);
+                        console.log(status);
                     }
                 });
             }));
         });
+
+        function make_base_auth(user, password) {
+            var tok = user + ':' + password;
+            var hash = btoa(tok);
+            return "Basic " + hash;
+        }
 
         function showAll() {
             $("#productTable").show();
