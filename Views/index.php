@@ -111,9 +111,9 @@ if (array_key_exists('Error', $data['response'])) {
                     data: {
                         'code': code
                     },
-                    dataType: 'jsonp',
+                    dataType: 'json',
                     beforeSend: function (xhr) {
-                        xhr.setRequestHeader ("Authorization", "Basic " + make_base_auth('candidate1', 'iptelJobOffer789!'));
+                        xhr.setRequestHeader ("Authorization", "Basic " + constructAuth('candidate1', 'iptelJobOffer789!'));
                     },
                     success: function (data, textStatus, xhr) {
                         debugger;
@@ -145,9 +145,9 @@ if (array_key_exists('Error', $data['response'])) {
             }));
         });
 
-        function make_base_auth(user, password) {
-            var tok = user + ':' + password;
-            var hash = btoa(tok);
+        function constructAuth(user, password) {
+            let tok = user + ':' + password;
+            let hash = btoa(tok);
             return "Basic " + hash;
         }
 
