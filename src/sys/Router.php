@@ -2,6 +2,7 @@
 
 namespace src\sys;
 
+use config\Routes;
 use src\sys\Routing\InputHandler;
 use src\sys\Routing\RoutingHandler;
 
@@ -30,6 +31,9 @@ class Router
     public function route()
     {
         $request = $this->inputHandler->constructRequestFromGlobals();
-        $this->routingHandler->execute($request);
+        $this->routingHandler->execute(
+            $request,
+            Routes::getRouts()
+        );
     }
 }

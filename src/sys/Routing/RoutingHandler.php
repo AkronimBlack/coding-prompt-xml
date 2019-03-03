@@ -10,8 +10,8 @@ class RoutingHandler
     /**
      * @param Request $request
      */
-    public function execute(Request $request)
+    public function execute(Request $request, array $routs)
     {
-        var_dump($request);
+        var_dump($routs);
     }
 }
