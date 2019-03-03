@@ -2,7 +2,7 @@
 
 namespace src\sys;
 
-use config\Routes;
+use src\sys\Entity\Response;
 use src\sys\Renderer\Renderer;
 use src\sys\Routing\InputHandler;
 use src\sys\Routing\RoutingHandler;
@@ -53,6 +53,10 @@ class Router
             $request,
             $this->routs
         );
-        $this->renderer->execute($response);
+        if($response instanceof Response){
+            $this->renderer->execute($response);
+        }else{
+            echo $response;
+        }
     }
 }

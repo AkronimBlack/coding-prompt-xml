@@ -11,16 +11,19 @@ class Request
     private $query;
     private $method;
     private $queryArray;
+    private $files;
 
     public function __construct(
         $uri,
         $method,
-        $query
+        $query,
+        $files
     ) {
         $this->uri    = $uri;
         $this->url = $this->constructUrl($uri);
         $this->query  = urldecode($query);
         $this->method = $method;
+        $this->files = $files;
 
         $this->resolveQuery();
     }
@@ -96,6 +99,18 @@ class Request
             return $this->queryArray[$key];
         }
         return null;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function getUpload(string $name)
+    {
+        if(array_key_exists($name , $this->files))
+        {
+            return $this->files[$name];
+        }
+        return false;
     }
 
 }

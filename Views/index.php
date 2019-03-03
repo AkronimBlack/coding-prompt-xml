@@ -56,6 +56,28 @@ if (array_key_exists('Error', $data['response'])) {
     </body>
 
     <script type="text/javascript">
+        $("#uploadForm").on('submit', (function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: 'http://localhost:8000/file/upload',
+                type: "POST",
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                dataType: 'json',
+                success: function (data) {
+                    debugger;
+                    if (data['success'] === true) {
+                        alert(data['items']);
+                        $("#uploadForm")[0].reset();
+                    }
+                },
+                error: function (e) {
+                    alert(e);
+                }
+            });
+        }));
     </script>
     </html>
 <?php

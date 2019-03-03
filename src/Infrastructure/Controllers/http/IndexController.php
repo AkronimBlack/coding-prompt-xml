@@ -12,7 +12,8 @@ class IndexController
     public function index(): Response
     {
         return new Response(
-            'index'
+            'index',
+            ['index']
         );
     }
 
