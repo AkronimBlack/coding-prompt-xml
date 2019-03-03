@@ -9,7 +9,7 @@ class Routes
         '/index' => 'IndexController/index',
     );
 
-    public static function getRouts()
+    public static function getRouts(): array
     {
         return self::$ROUTS;
     }
