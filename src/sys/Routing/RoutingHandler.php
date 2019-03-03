@@ -11,11 +11,12 @@ class RoutingHandler
      * @param Request $request
      * @param array $routs
      *
+     * @return mixed
      */
     public function execute(Request $request, array $routs)
     {
         $callable = $this->resolveRoute($request, $routs);
-        $this->callControllerAndMethod($callable['controller'] , $callable['method'] , $request);
+        return $this->callControllerAndMethod($callable['controller'] , $callable['method'] , $request);
     }
 
     /**
@@ -47,6 +48,8 @@ class RoutingHandler
      * @param string $controller
      * @param string $method
      * @param Request $request
+     *
+     * @return mixed
      */
     private function callControllerAndMethod(string $controller, string $method, Request $request)
     {
@@ -70,6 +73,6 @@ class RoutingHandler
                 return call_user_func_array(array($class, $method), array($request));
             }
         }
-        call_user_func(array($class, $method));
+        return call_user_func(array($class, $method));
     }
 }
